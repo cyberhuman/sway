@@ -10,6 +10,22 @@
 struct sway_view;
 struct sway_seat;
 
+struct border_colors {
+	float border[4];
+	float background[4];
+	float text[4];
+	float indicator[4];
+	float child_border[4];
+};
+
+struct border_color_classes {
+	struct border_colors *focused;
+	struct border_colors *focused_inactive;
+	struct border_colors *unfocused;
+	struct border_colors *urgent;
+	struct border_colors *placeholder;
+};
+
 enum sway_container_layout {
 	L_NONE,
 	L_HORIZ,
@@ -122,6 +138,9 @@ struct sway_container {
 	bool border_bottom;
 	bool border_left;
 	bool border_right;
+
+	struct border_color_classes border_colors;
+	struct border_color_classes border_color_config;
 
 	struct sway_workspace *workspace; // NULL when hidden in the scratchpad
 	struct sway_container *parent;    // NULL if container in root of workspace
@@ -386,5 +405,7 @@ bool container_is_sticky_or_child(struct sway_container *con);
  * Returns the number of new containers added to the parent
  */
 int container_squash(struct sway_container *con);
+
+void container_update_border_colors(struct sway_container *container);
 
 #endif
